@@ -1,0 +1,68 @@
+
+void readFile_record(RecordList* headRecord)
+{
+	
+	Record newRecord;
+	FILE *fp;char ch;
+
+	if((fp=fopen("C:\\Users\\liangyexi\\Documents\\University\\in\\se\\c\\ssss\\record.txt","r"))==NULL)
+	{
+		printf("Error\n");
+		return;
+	}
+	ch=fgetc(fp);
+	rewind(fp);
+		if(ch==EOF)
+		{
+			return;
+		}
+			fread(&newRecord,sizeof(Record),1,fp);
+			while (feof(fp)==0)
+
+		{
+			RecordList* newRecordList=(RecordList*)malloc(sizeof(RecordList));
+			newRecordList->record=newRecord;
+			wand_record(headRecord,newRecordList);
+			fread(&newRecord,sizeof(Record),1,fp);
+
+		}
+
+		fclose(fp);
+		printf("Done_read_Record\n");
+//		printList();
+}
+
+RecordList* createRecord(CustomerList* curCustomer,ItemList* curItem)
+{
+	RecordList* newRecord=(RecordList*)malloc(sizeof(RecordList));
+	newRecord->record.item=curItem->item;
+	newRecord->record.customerID=curCustomer->customer.ID;
+	newRecord->record.customerSalary=curCustomer->customer.salary;
+	return newRecord;
+	
+}
+
+void wand_record(RecordList* headRecord,RecordList* curRecord)
+{
+	RecordList* curPtr=headRecord;
+	RecordList* prePtr=NULL;
+	while(curPtr!=NULL)
+	{
+		prePtr=curPtr;
+		curPtr=curPtr->next;
+	}
+	prePtr->next=curRecord;
+	curRecord->next=curPtr;
+	
+	printf("Done_wand_record");
+}
+
+RecordList* createHeadRecord()// HEAD_RECORD
+{
+	RecordList* headRecord=(RecordList*)malloc(sizeof(RecordList));
+	headRecord->next=NULL;
+	return headRecord;
+}
+
+
+

@@ -1,0 +1,42 @@
+G=function(s,S,T)
+{
+  t=0
+  x=S
+  H=0
+  C=5*S+10
+  R=0
+  y=0
+  t1=Inf
+  t0=t-log(runif(1))/8
+  r=12
+  while(t<T)
+  {
+    if(t0<t1)
+    {
+      a=sample(c(1,2,3,4),1,replace = F,prob = c(0.7,0.2,0.08,0.02))
+      H=H+(t0-t)*x*0.5
+      t=t0
+      t0=t-log(runif(1))/8
+      w=min(a,x)
+      R=R+w*r;x=x-w
+      if(x<s& y==0)
+      {
+        y=S-x;t1=t+1
+      }
+    }
+    if(t0>=t1)
+    {
+      H=H+(t1-t)*x*0.5
+      t=t1
+      if(y>0)
+      {
+        C=C+5*y+10
+      }
+      x=x+y
+      y=0;t1=Inf
+    }
+  }
+  
+ meanR=(R-H-C)/T
+ return(meanR)
+}

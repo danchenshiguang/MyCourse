@@ -1,0 +1,102 @@
+//连上链表
+void wand_product(ProductList* headProduct,struct productInfo newProduct)
+{
+	ProductList* newPtr=(ProductList*)malloc(sizeof(ProductList));
+	newPtr->productInfo=newProduct;
+	newPtr->next=NULL;
+	ProductList* curPtr=headProduct;
+	ProductList* previousPtr=NULL;
+	while(curPtr!=NULL)
+	{
+		previousPtr=curPtr;
+		curPtr=curPtr->next;
+	}
+	previousPtr->next=newPtr;//注意 连接的方向不同 
+	newPtr->next=curPtr;
+	printf("Done_wand_product\n");
+
+}
+//打印商品链表
+void printList_product(ProductList* headProduct)
+{
+	ProductList* curPtr=headProduct;
+		puts("The list is");
+		curPtr=curPtr->next;
+		while(curPtr!=NULL)
+		{
+			
+			printf("%s-->",curPtr->productInfo.description.name);
+			curPtr=curPtr->next;
+		}
+		puts("NULL\n");
+} 
+
+//读商品文件 将每一件都添加到链表上去
+void readFile_product(ProductList *headProduct)
+{
+	printf("aaa\n");
+	ProductList PL;
+	struct productInfo plf;
+	FILE * fp=fopen("C:\\Users\\liangyexi\\Documents\\University\\in\\se\\c\\ssss\\product.txt", "r+");
+	if(fp==NULL)
+     {
+      printf("打开文件失败.\n");
+      exit(0);
+     }
+     
+    if(fgetc(fp)!=EOF)   
+    { 
+   	  fseek(fp,0,SEEK_SET);
+   	  fread(&PL,sizeof(ProductList),1,fp); 
+   	  while (feof(fp)==0)/*判断是否读完*/ 
+   	  {
+   	  	plf=PL.productInfo;
+   	  	wand_product(headProduct,plf);
+   	  	fread(&PL,sizeof(ProductList),1,fp); 
+	  }
+    }
+    else
+    {
+    	printf("商品库存为空！！！\n");
+	}
+	printList_product(headProduct);
+	
+}
+
+
+
+
+
+//**********************************************
+//关键字查询商品
+void electProduct(ProductList* headProduct,char* keyWord)//单纯显示特定商品 
+{
+	printf("echo:1_electProduct\n");
+	char* str;
+	ProductList* curPtr=headProduct;
+	while(curPtr!=NULL)
+	{
+		printf("echo:2_electProduct\n");
+		str=strstr(curPtr->productInfo.description.name,keyWord);
+		if(str!=NULL)
+		{
+			printf("echo:3_electProduct\n");
+			showProductInfo(curPtr);
+		}
+		curPtr=curPtr->next;
+	}
+}
+
+
+
+void showProductInfo(ProductList* curPtr)
+{
+			printf("*******************************\n");
+			printf("******code:%d******\n",curPtr->productInfo.description.code);
+			printf("******name:%s******\n",curPtr->productInfo.description.name);
+			printf("******kind:%d******\n",curPtr->productInfo.description.kind);
+			printf("******weight:%lf******\n",curPtr->productInfo.description.weight);
+			printf("******price:%lf******\n",curPtr->productInfo.description.price);
+			printf("*******************************\n\n");
+}
+

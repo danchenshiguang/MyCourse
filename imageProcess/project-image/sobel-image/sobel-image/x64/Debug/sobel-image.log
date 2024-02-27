@@ -1,0 +1,4 @@
+﻿  log.cpp
+D:\VSProject\project-image\sobel-image\sobel-image\log.cpp(77,31): warning C4244: “=”: 从“double”转换到“uchar”，可能丢失数据
+D:\VSProject\project-image\sobel-image\sobel-image\log.cpp(105,33): warning C4244: “=”: 从“double”转换到“uchar”，可能丢失数据
+  sobel-image.vcxproj -> D:\VSProject\project-image\sobel-image\x64\Debug\sobel-image.exe

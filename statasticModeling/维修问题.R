@@ -1,0 +1,61 @@
+eve_list=function(lamba,n)
+{
+  events=c()
+  for (i in 1:n) {
+    events[i]=-log(runif(1))/lamba
+  }
+return(events)
+}
+
+Sys=function(n,s,lamba1,lamba2)
+{
+  t=r=0
+  r=0
+  tR=Inf
+  event_list=c()
+  events=eve_list(lamba1,n)
+  event_list=sort(c(events,tR))
+  T=0
+  while(1)
+  {
+    if(event_list[1]<tR)
+    {
+      t=event_list[1];r=r+1
+      if(r==s+1)
+      {
+        T=t
+        break
+      }
+      if(r<s+1)
+      {
+        tk=t-log(runif(1))/lamba1
+        event_list=event_list[-1]
+        event_list=sort(c(event_list,tk))
+      }
+      if(r==1)
+      {
+        tR=t-log(runif(1))/lamba2
+      }
+    }
+    else
+    {
+      t=tR;r=r-1
+      if(r>0)
+      {
+        tR=t-log(runif(1))/lamba2
+      }
+      if(r==0)
+      {
+        tR=Inf
+      }
+    }
+  }
+  return(T)
+}
+
+
+result=c()
+for (i in 1:1000) {
+  result[i]=Sys(15,5,0.01,0.1)
+}
+mean(result)
